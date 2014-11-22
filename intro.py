@@ -1,4 +1,5 @@
 import pygame
+import main
 
 def init(screen):
     global intropic
@@ -21,7 +22,8 @@ def draw(screen, ms):
     pygame.display.flip()
     if fade == 255:
         fadeIn = False
-    pygame.time.wait(20)
+    if fade == 0 and not fadeIn:
+        main.setState(main.mainmenu)
 
 fade = 0
 fadeIn = True
