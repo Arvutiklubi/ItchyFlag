@@ -49,8 +49,8 @@ while True:
     screen.blit(sky_surfaces[1],(0,0))
 
     for i in range(3):
-        screen.blit(background[1],(i*500,(height-500)*3/4))
-        screen.blit(background[2],(i*540,(height-500)*3/4))
+        screen.blit(background[1],(i*500,(height*0)))
+        screen.blit(background[2],(i*500,(height*1/4)))
         screen.blit(ground_surfaces[1], (i * 500, (height) * 3/4))
 
     group.update()
