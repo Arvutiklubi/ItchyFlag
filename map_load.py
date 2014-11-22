@@ -1,5 +1,8 @@
 import sys, pygame, math,character
 
+def imageDim(image):
+    return pygame.image.load(image).get_rect().size
+    
 pygame.init()
 
 size = width, height = 1280,720
