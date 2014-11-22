@@ -21,7 +21,6 @@ def draw(screen, ms):
     screen.fill((0,0,0))
     intropic.set_alpha(fade)
     screen.blit(intropic, (0,0))
-    pygame.display.flip()
     if fade == 255:
         fadeIn = False
     if fade == 0 and not fadeIn:
