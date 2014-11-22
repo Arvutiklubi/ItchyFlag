@@ -1,9 +1,10 @@
 import pygame, sys
-import sharedvars
 
+import sharedvars
 import intro, mainmenu
 
-screen = None
+def setState(state):
+	sharedvars.state = state
 
 def quit():
 	pygame.quit()
@@ -12,7 +13,7 @@ def quit():
 if __name__ == '__main__':
 	pygame.init()
 
-	screen = pygame.display.set_mode((1280, 720), pygame.SRC_ALPHA)
+	screen = pygame.display.set_mode((1280, 720), pygame.SRCALPHA)
 	clock = pygame.time.Clock()
 
 	intro.init(screen)
