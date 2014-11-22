@@ -11,7 +11,7 @@ class Character(pygame.sprite.Sprite):
 
         self.speed = [0,0]
 
-    def update(self,ms):
+    def update(self):
         self.rect.x += self.speed[0]
         self.rect.y += self.speed[1]
 
@@ -56,6 +56,7 @@ if __name__ == "__main__":
     
     while 1:
         ms = clock.tick(60)
+        
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
                pygame.quit()
@@ -73,10 +74,12 @@ if __name__ == "__main__":
                 enemy.speed[0] = 0
                 enemy.speed[1] = 0
 
+        if pygame.sprite.spritecollide(enemy,group,0):
+            print("yes")
         screen.fill((0,0,0))
 
-        group.update(ms)
-        eg.update(ms)
+        group.update()
+        eg.update()
         
         group.draw(screen)
         eg.draw(screen)
