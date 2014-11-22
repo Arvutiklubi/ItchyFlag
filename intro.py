@@ -3,7 +3,7 @@ import main
 
 def init(screen):
     global intropic
-    intropic = pygame.image.load("intro/algintro.png").convert()
+    intropic = pygame.image.load("intro/intro.png").convert()
 
 def onEvent(event):
     global fadeIn
