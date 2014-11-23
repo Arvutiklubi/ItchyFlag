@@ -4,6 +4,7 @@ from random import randint
 
 bgPosX = bgPosY = 0
 bgSpeedX = bgSpeedY = 0
+bgAlpha = 0
 
 def playsound(sound):
     global mute
@@ -26,6 +27,7 @@ def init(screen):
     global fullscreen
     global redBox
     global bgSpeedX, bgSpeedY
+    global bgOverlaySurf
 
     pygame.mixer.init()
     menupic = pygame.image.load("image_data/background/menuBackground.png").convert()
@@ -51,6 +53,9 @@ def init(screen):
 
     bgSpeedX = randint(5, 15)
     bgSpeedY = randint(5, 15)
+
+    bgOverlaySurf = screen.copy()
+    bgOverlaySurf.fill((0, 0, 0))
     
 def onEvent(event):
     
@@ -133,13 +138,14 @@ def onEvent(event):
     else:
         yellowBox = False
         redBox = False
+        
 def draw(screen,ms):
     global menupic
     global choice1
     global yellowBox
     global redBox
     global fullscreen
-    global bgPosX, bgPosY, bgSpeedX, bgSpeedY
+    global bgPosX, bgPosY, bgSpeedX, bgSpeedY, bgAlpha, bgOverlaySurf
     screen.fill( (0,0,0) )
     menupic.set_alpha(100)
     bgPosX += bgSpeedX * ms / 1000
@@ -158,6 +164,10 @@ def draw(screen,ms):
         bgSpeedY = -randint(5, 15)
     screen.blit(menupic, (0,0), (bgPosX, bgPosY, screen.get_width(), screen.get_height()))
     screen.blit(radialGradPic, (0, 0))
+    if bgAlpha < 255:
+        bgAlpha += ms / 5
+        bgOverlaySurf.set_alpha(255 - bgAlpha)
+        screen.blit(bgOverlaySurf, (0, 0))
     #mainmenu
     if menuscreen == 0:
         screen.blit(fontobject.render("Start game", 1, (255, 255, 255)),(600, 300))
