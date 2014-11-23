@@ -211,7 +211,9 @@ def draw(screen,ms):
     #credits
     elif menuscreen == 2:
         screen.blit(fontobject.render("Back", 1, (255, 255, 255)),(600, 300))
-        screen.blit(fontobject.render("here should be some text", 1, (255, 255, 255)),(500, 340))
+        screen.blit(fontobject.render("Hendrik Eerikson, Silver Juvanen, Meelis Perli, " +
+                                      "Joonatan Samuel, Simo Sirel, Magnus Teekivi",
+                                      1, (255, 255, 255)),(200, 340))
         screen.blit(fontobject.render("Credits", 1, (255, 255, 255)),(580, 200))
         pygame.draw.rect(screen, (255,255,255),(575,310 + choice*50 ,10,10))
         
