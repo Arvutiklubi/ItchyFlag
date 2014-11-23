@@ -5,7 +5,7 @@ def init(screen):
     global sky_surfaces, background_surfaces
     global close_objects_surfaces, ground_surfaces
     global player, group
-    global sky_line, background_line
+    global sky_line, background_line,enemy_line,enemy_ranged
     global close_objects_line, ground_line
     global diff, maxX, face, endHasBeenReached
     
@@ -25,6 +25,7 @@ def init(screen):
         }
 
     player = character.Player("char_data/mainchar_idle.png")
+    enemy_ranged = pygame.image.load("mob_data/creep_ranged.png")
 
     player.rect.y = screen.get_height() * (5/8)
     player.rect.x = 50
@@ -39,6 +40,7 @@ def init(screen):
     background_line = f.readline().strip()
     close_objects_line = f.readline().strip()
     ground_line = f.readline().strip()
+    enemy_line = f.readline().strip().split()
     f.close()
 
     diff = 0
@@ -82,6 +84,10 @@ def draw(screen,ms):
         screen.blit(close_objects_surfaces[int(close_objects_line[i])],(i*500 - diff,screen.get_height()*1/4))
         screen.blit(ground_surfaces[int(ground_line[i])], (i * 500 - diff, (screen.get_height()) * 3/4))
 
+    for i in range(len(enemy_line)):
+        if diff>i:
+            screen.blit(enemy_ranged,(i,screen.get_height() * (5/8)))
+    
     if player.rect.x > screen.get_width()/2 and not endHasBeenReached:
         diff += 10
         player.rect.x -= 10
