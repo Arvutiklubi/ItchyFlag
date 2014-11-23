@@ -4,15 +4,24 @@ def init(screen):
     
     global fontobject
     global choice
+    global choice1
     #menus oleva pildi number
     global menuscreen
     #maksimum valikute arv lehel
     global n
     global menupic
+    global changeSound
+    global yellowBox
+    global mute
+    pygame.mixer.init()
     menupic = pygame.image.load("image_data/background/menuBackground.png").convert()
+    changeSound = pygame.mixer.Sound("sounds/menuButtonChange.wav")
     choice = 0
+    choice1 = 0
     n = 3
     menuscreen = 0
+    yellowBox = False
+    mute = False
     fontobject = pygame.font.SysFont('Arial', 24)
     
 def onEvent(event):
@@ -20,6 +29,8 @@ def onEvent(event):
     global choice
     global menuscreen
     global n
+    global yellowBox
+    global mute
     if pygame.mouse.get_pos()[0] > 600 and pygame.mouse.get_pos()[0] < 700 and pygame.mouse.get_pos()[1] > 300 and pygame.mouse.get_pos()[1] < 350 and n >= 0:
         choice = 0
     elif pygame.mouse.get_pos()[0] > 600 and pygame.mouse.get_pos()[0] < 700 and pygame.mouse.get_pos()[1] > 350 and pygame.mouse.get_pos()[1] < 400 and n >=1:
@@ -35,13 +46,18 @@ def onEvent(event):
             choice -=1
     
     #valikud main menu juures
-    if (event.type == pygame.K_RETURN or (event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pos()[0] > 600 and pygame.mouse.get_pos()[0] < 700 and pygame.mouse.get_pos()[1] > 300 and pygame.mouse.get_pos()[1] < 500)) and menuscreen == 0:
+    if ((event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN) or (event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pos()[0] > 600 and pygame.mouse.get_pos()[0] < 700 and pygame.mouse.get_pos()[1] > 300 and pygame.mouse.get_pos()[1] < 500)) and menuscreen == 0:
+        pygame.mixer.Sound.play(changeSound)
         if choice == 0:
             #Start game
-            main.setState(main.map_load)
+            main.setState(main.intro)
         elif choice == 1:
             #Options
             menuscreen = 1
+            n = 0
+            choice = 0
+        elif choice == 2:
+            menuscreen = 2
             n = 0
             choice = 0
         elif choice == 3:
@@ -49,13 +65,31 @@ def onEvent(event):
             main.quit()
             
     #valikud optionsi juures
-    elif (event.type == pygame.K_RETURN or (event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pos()[0] > 600 and pygame.mouse.get_pos()[0] < 700 and pygame.mouse.get_pos()[1] > 300 and pygame.mouse.get_pos()[1] < 500)) and menuscreen == 1:
+    elif ((event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN) or (event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pos()[0] > 600 and pygame.mouse.get_pos()[0] < 700 and pygame.mouse.get_pos()[1] > 300 and pygame.mouse.get_pos()[1] < 500)) and (menuscreen == 1 or menuscreen == 2):
+        pygame.mixer.Sound.play(changeSound)
         if choice == 0:
             menuscreen = 0
             n = 3
             
+    if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE and menuscreen != 0:
+        pygame.mixer.Sound.play(changeSound)
+        menuscreen = 0
+        choice = 0
+        n = 3
+        
+    #optionsi kraam
+    if pygame.mouse.get_pos()[0] > 577 and pygame.mouse.get_pos()[0] < 595 and pygame.mouse.get_pos()[1] > 362 and pygame.mouse.get_pos()[1] < 380 and menuscreen == 1:
+        yellowBox = True
+        if event.type == pygame.MOUSEBUTTONDOWN and mute == False:
+            mute = True
+        elif event.type == pygame.MOUSEBUTTONDOWN and mute == True:
+            mute = False
+    else:
+        yellowBox = False
 def draw(screen,ms):
     global menupic
+    global choice1
+    global yellowBox
     screen.fill( (0,0,0) )
     menupic.set_alpha(100)
     screen.blit(menupic, (0,0))
@@ -71,3 +105,21 @@ def draw(screen,ms):
     elif menuscreen == 1:
         pygame.draw.rect(screen, (255,255,255),(575,310 + choice*50,10,10))
         screen.blit(fontobject.render("Back", 1, (255, 255, 255)),(600, 300))
+        pygame.draw.rect(screen, (255,255,255),(570,355,20,20),2)
+        screen.blit(fontobject.render("Mute", 1, (255, 255, 255)),(600, 350))
+        if mute == True:
+            pygame.draw.rect(screen, (255,255,255),(574,359,13,13))
+        if yellowBox == True:
+            pygame.draw.rect(screen, (255,255,0),(572,357,17,17),2)
+            
+    #credits
+    elif menuscreen == 2:
+        screen.blit(fontobject.render("Back", 1, (255, 255, 255)),(600, 300))
+        screen.blit(fontobject.render("here should be some text", 1, (255, 255, 255)),(500, 340))
+        screen.blit(fontobject.render("Credits", 1, (255, 255, 255)),(580, 200))
+        pygame.draw.rect(screen, (255,255,255),(575,310 + choice*50 ,10,10))
+        
+    #sounds
+    if choice != choice1:
+        pygame.mixer.Sound.play(changeSound)
+        choice1 = choice
