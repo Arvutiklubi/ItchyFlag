@@ -50,7 +50,7 @@ def onEvent(event):
         pygame.mixer.Sound.play(changeSound)
         if choice == 0:
             #Start game
-            main.setState(main.intro)
+            main.setState(main.map_load)
         elif choice == 1:
             #Options
             menuscreen = 1
