@@ -78,7 +78,17 @@ def onEvent(e):
             player.speed[0] = 0
             player.speed[1] = 0
 
+<<<<<<< HEAD
 def draw(screen,ms):
+=======
+        if e.key == pygame.K_SPACE:
+            if face == "W":
+                player.image = flip(pygame.image.load("char_data/mainchar_idle.png"))
+            else:
+                player.image = pygame.image.load("char_data/mainchar_idle.png")
+
+def draw(screen,millis):
+>>>>>>> 62216b7aa8af25b066f9b1113d03b16950ab89bb
     global diff, endHasBeenReached
 
     if diff + screen.get_width() >= maxX:

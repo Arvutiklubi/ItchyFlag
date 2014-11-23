@@ -29,10 +29,16 @@ class Character(pygame.sprite.Sprite):
                 self.curAnim = 2
                 self.prevAnim = 2
             elif self.prevAnim == 2:
+                self.curAnim = 3
+                self.prevAnim = 3
+            elif self.prevAnim == 3:
+                self.curAnim = 4
+                self.prevAnim = 4
+            elif self.prevAnim == 4:
                 self.curAnim = 0
                 self.prevAnim = 0
                 
-            self.waitTime = 100     
+            self.waitTime = 200     
 
 class Player(Character):
     
@@ -42,11 +48,12 @@ class Player(Character):
 
         self.prevAnim = 1
         self.curAnim = 0
-        
+
+        self.mainSurface = pygame.image.load("char_data/mainchar_run.png")
         self.animations = []
-        self.animations.append(pygame.image.load("char_data/mainchar_run1.png"))
-        self.animations.append(pygame.image.load("char_data/mainchar_run2.png"))
-        self.animations.append(pygame.image.load("char_data/mainchar_run3.png"))
+
+        for a in range(0,5):
+            self.animations.append(self.mainSurface.subsurface(a * 200,0, 200,200))
 
     def runningAnimation(self,face):
         self.prevAnim = self.curAnim
