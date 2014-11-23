@@ -1,5 +1,9 @@
 import pygame, math,character
 
+def flip(img):
+    aimg = pygame.transform.flip(img,1,0)
+    return aimg
+
 def init(screen):
     
     global sky_surfaces, background_surfaces
@@ -58,28 +62,45 @@ def onEvent(e):
                 #player.speed[1] = 10
         if e.key == pygame.K_d:
             if face == "E":
-                player.image = pygame.transform.flip(player.image,1,0)
+                player.image = flip(player.image)
             player.speed[0] = 10
             face = "W"
         elif e.key == pygame.K_a:
             if face == "W":
-                player.image = pygame.transform.flip(player.image,1,0)
+                player.image = flip(player.image)
             player.speed[0] = -10
             face = "E"
-    elif e.type == pygame.KEYUP:
-            player.speed[0] = 0
-            player.speed[1] = 0
+        elif e.key == pygame.K_SPACE:
+            if face == "W":
+                player.image = flip(pygame.image.load("char_data/mainchar_attack.png"))
+            else:
+                player.image = pygame.image.load("char_data/mainchar_attack.png")
 
-def draw(screen,ms):
+    elif e.type == pygame.KEYUP:
+        player.speed[0] = 0
+        player.speed[1] = 0
+
+        if e.key == pygame.K_SPACE:
+            if face == "W":
+                player.image = flip(pygame.image.load("char_data/mainchar_idle.png"))
+            else:
+                player.image = pygame.image.load("char_data/mainchar_idle.png"
+
+def draw(screen,milliss):
     global diff, endHasBeenReached
 
     if diff + screen.get_width() >= maxX:
         endHasBeenReached = True
+
+    if player.speed[0] > 0:
+        player.image = player.runningAnimation("W")
+
+    if player.speed[0] < 0:
+        player.image = player.runningAnimation("E")
     
     screen.blit(sky_surfaces[1],(0,0))
 
     for i in range(len(sky_line)):
-        #screen.blit(sky_surfaces[int(sky_line[i])],(i*500 - diff,0))
         screen.blit(background_surfaces[int(background_line[i])],(i*500 - diff,(130)))
         screen.blit(close_objects_surfaces[int(close_objects_line[i])],(i*500 - diff,screen.get_height()*1/4))
         screen.blit(ground_surfaces[int(ground_line[i])], (i * 500 - diff, (screen.get_height()) * 3/4))
@@ -93,5 +114,5 @@ def draw(screen,ms):
         diff += 10
         player.rect.x -= 10
 
-    group.update()
+    group.update(millis)
     group.draw(screen)
