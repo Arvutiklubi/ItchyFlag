@@ -1,4 +1,4 @@
-import pygame, math,character
+import pygame, math, character, user_interface
 
 def init(screen):
     
@@ -48,6 +48,8 @@ def init(screen):
     maxX = len(sky_line) * 500
     face = "W"
 
+    user_interface.init()
+
 def onEvent(e):
     global face
 
@@ -94,3 +96,4 @@ def draw(screen,ms):
 
     group.update()
     group.draw(screen)
+    user_interface.draw_ui(screen)
