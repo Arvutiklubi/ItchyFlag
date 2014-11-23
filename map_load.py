@@ -64,7 +64,6 @@ def onEvent(e):
                 player.image = pygame.transform.flip(player.image,1,0)
             player.speed[0] = -10
             face = "E"
-            print("work")
     elif e.type == pygame.KEYUP:
             player.speed[0] = 0
             player.speed[1] = 0
@@ -78,7 +77,7 @@ def draw(screen,ms):
     screen.blit(sky_surfaces[1],(0,0))
 
     for i in range(len(sky_line)):
-        screen.blit(sky_surfaces[int(sky_line[i])],(i*500 - diff,0))
+        #screen.blit(sky_surfaces[int(sky_line[i])],(i*500 - diff,0))
         screen.blit(background_surfaces[int(background_line[i])],(i*500 - diff,(130)))
         screen.blit(close_objects_surfaces[int(close_objects_line[i])],(i*500 - diff,screen.get_height()*1/4))
         screen.blit(ground_surfaces[int(ground_line[i])], (i * 500 - diff, (screen.get_height()) * 3/4))

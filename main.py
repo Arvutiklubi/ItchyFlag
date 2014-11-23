@@ -32,4 +32,3 @@ if __name__ == '__main__':
 		
 		sharedvars.state.draw(screen, ms)
 		pygame.display.flip()
-		print(sharedvars.state)
