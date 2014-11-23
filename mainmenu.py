@@ -7,7 +7,6 @@ def playsound(sound):
         pygame.mixer.Sound.play(sound)
 
 def init(screen):
-    
     global fontobject
     global choice
     global choice1
@@ -21,6 +20,7 @@ def init(screen):
     global mute
     global fullscreen
     global redBox
+        
     pygame.mixer.init()
     menupic = pygame.image.load("image_data/background/menuBackground.png").convert()
     changeSound = pygame.mixer.Sound("sounds/menuButtonChange.wav")
@@ -30,7 +30,15 @@ def init(screen):
     menuscreen = 0
     yellowBox = False
     mute = False
-    fullscreen = False
+    
+    config = {}
+    fail = open("config.txt")
+    for line in fail:
+        line = line.split("=")
+        config[line[0]] = line[1]
+    fail.close()
+    fullscreen = config["fullscreen"]
+    
     redBox = False
     fontobject = pygame.font.SysFont('Arial', 24)
     
@@ -80,6 +88,9 @@ def onEvent(event):
             choice = 0
         elif choice == 3:
             #Quit game
+            fail = open("config.txt", "w")
+            fail.write("fullscreen="+ fullscreen)
+            fail.close()
             main.quit()
             
     #valikud optionsi juures
@@ -101,11 +112,11 @@ def onEvent(event):
             
     elif pygame.mouse.get_pos()[0] > 570 and pygame.mouse.get_pos()[0] < 590 and pygame.mouse.get_pos()[1] > 390 and pygame.mouse.get_pos()[1] < 410 and menuscreen == 1:        
         redBox = True
-        if event.type == pygame.MOUSEBUTTONDOWN and fullscreen == True:
-            fullscreen = False
+        if event.type == pygame.MOUSEBUTTONDOWN and fullscreen == "True":
+            fullscreen = "False"
             main.screen = pygame.display.set_mode((1280, 720)) 
-        elif event.type == pygame.MOUSEBUTTONDOWN and fullscreen == False:
-            fullscreen = True
+        elif event.type == pygame.MOUSEBUTTONDOWN and fullscreen == "False":
+            fullscreen = "True"
             main.screen = pygame.display.set_mode((1280, 720), pygame.FULLSCREEN)
     else:
         yellowBox = False
@@ -138,6 +149,8 @@ def draw(screen,ms):
             pygame.draw.rect(screen, (255,255,255),(574,359,13,13))
         if yellowBox == True:
             pygame.draw.rect(screen, (255,255,0),(572,357,17,17),2)
+        if fullscreen == "True":
+            pygame.draw.rect(screen, (255, 255, 255), (574, 394, 13, 13))
         if redBox == True:
             pygame.draw.rect(screen, (255, 0, 0), (572, 392, 17, 17),2)
             
