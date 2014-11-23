@@ -34,7 +34,7 @@ def init(screen):
             2 : pygame.image.load("image_data/ground/maapind2.png").convert_alpha(),
         }
 
-    player = character.Player("char_data/mainchar_idle.png")
+    player = character.Player("char_data/mainchar_idle.png","char_data/mainchar_run.png")
 
     player.rect.y = screen.get_height() * (5/8)
     player.rect.x = 50
@@ -56,7 +56,7 @@ def init(screen):
     f.close()
 
     for distance in enemy_line:
-        enemy = character.Zombie("mob_data/creep_ranged.png")
+        enemy = character.Zombie("mob_data/creep_ranged.png","mob_data/creep_ranged_run.png")
         enemy.rect.x = int(distance)
         enemy.rect.y = screen.get_height() * (5/8)
         enemies.add(enemy)
@@ -148,6 +148,10 @@ def draw(screen,millis):
    
     for enemy in enemies:
         enemy.updateAI(player.rect.x, 2000 ,millis,diff,screen.get_width())
+        if enemy.speed[0] > 0:
+            enemy.image = enemy.runningAnimation("W")
+        if enemy.speed[0] < 0:
+            enemy.image = enemy.runningAnimation("E")
     enemies.update(millis)       
     enemies.draw(screen)
     
