@@ -1,4 +1,4 @@
-import pygame, math, character, user_interface
+import pygame, math, character, user_interface, main
 
 def init(screen):
     
@@ -68,6 +68,8 @@ def onEvent(e):
                 player.image = pygame.transform.flip(player.image,1,0)
             player.speed[0] = -10
             face = "E"
+        if e.key == pygame.K_ESCAPE or e.key == pygame.K_p:
+            main.setState(main.in_game_menu)
     elif e.type == pygame.KEYUP:
             player.speed[0] = 0
             player.speed[1] = 0
