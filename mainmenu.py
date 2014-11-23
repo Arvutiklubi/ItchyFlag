@@ -1,5 +1,11 @@
 import pygame
 import main
+
+def playsound(sound):
+    global mute
+    if mute == False:
+        pygame.mixer.Sound.play(sound)
+
 def init(screen):
     
     global fontobject
@@ -47,7 +53,7 @@ def onEvent(event):
     
     #valikud main menu juures
     if ((event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN) or (event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pos()[0] > 600 and pygame.mouse.get_pos()[0] < 700 and pygame.mouse.get_pos()[1] > 300 and pygame.mouse.get_pos()[1] < 500)) and menuscreen == 0:
-        pygame.mixer.Sound.play(changeSound)
+        playsound(changeSound)
         if choice == 0:
             #Start game
             main.setState(main.map_load)
@@ -66,13 +72,13 @@ def onEvent(event):
             
     #valikud optionsi juures
     elif ((event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN) or (event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pos()[0] > 600 and pygame.mouse.get_pos()[0] < 700 and pygame.mouse.get_pos()[1] > 300 and pygame.mouse.get_pos()[1] < 500)) and (menuscreen == 1 or menuscreen == 2):
-        pygame.mixer.Sound.play(changeSound)
+        playsound(changeSound)
         if choice == 0:
             menuscreen = 0
             n = 3
             
     if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE and menuscreen != 0:
-        pygame.mixer.Sound.play(changeSound)
+        playsound(changeSound)
         menuscreen = 0
         choice = 0
         n = 3
@@ -80,10 +86,13 @@ def onEvent(event):
     #optionsi kraam
     if pygame.mouse.get_pos()[0] > 577 and pygame.mouse.get_pos()[0] < 595 and pygame.mouse.get_pos()[1] > 362 and pygame.mouse.get_pos()[1] < 380 and menuscreen == 1:
         yellowBox = True
+        
         if event.type == pygame.MOUSEBUTTONDOWN and mute == False:
             mute = True
+            
         elif event.type == pygame.MOUSEBUTTONDOWN and mute == True:
             mute = False
+            
     else:
         yellowBox = False
 def draw(screen,ms):
@@ -121,5 +130,5 @@ def draw(screen,ms):
         
     #sounds
     if choice != choice1:
-        pygame.mixer.Sound.play(changeSound)
+        playsound(changeSound)
         choice1 = choice
