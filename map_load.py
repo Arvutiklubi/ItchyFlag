@@ -1,5 +1,8 @@
 import pygame, math, character, user_interface, main, effects
 
+transitionPercent = 0.0
+transitionSurf1 = transitionSurf2 = None
+
 def flip(img):
     aimg = pygame.transform.flip(img,1,0)
     return aimg
@@ -13,6 +16,7 @@ def init(screen):
     global close_objects_line, ground_line
     global diff, maxX, face, endHasBeenReached
     global group_knives,enemies
+    global transitionShadow1, transitionShadow2
     
     sky_surfaces = {
             1 : pygame.image.load("image_data/sky/taevas1.png").convert_alpha(),
@@ -32,11 +36,6 @@ def init(screen):
     ground_surfaces = {
             1 : pygame.image.load("image_data/ground/maapind1.png").convert_alpha(),
             2 : pygame.image.load("image_data/ground/maapind2.png").convert_alpha(),
-        }
-    mob_data = {
-            1: ["mob_data/creep_ranged.png","mob_data/creep_ranged_run.png"],
-            2: ["mob_data/pakszombi.png", None]
-            
         }
 
     player = character.Player("char_data/mainchar_idle.png","char_data/mainchar_run.png")
@@ -60,12 +59,9 @@ def init(screen):
     enemy_line = f.readline().strip().split()
     f.close()
 
-    for a in range(0,len(enemy_line),2):
-        if mob_data[int(enemy_line[a+1])][1] == None:
-            enemy = character.Zombie(mob_data[int(enemy_line[a+1])][0],None)
-        else:
-            enemy = character.Zombie(mob_data[int(enemy_line[a+1])][0],mob_data[int(enemy_line[a+1])][1])
-        enemy.rect.x = int(enemy_line[a])
+    for distance in enemy_line:
+        enemy = character.Zombie("mob_data/creep_ranged.png","mob_data/creep_ranged_run.png")
+        enemy.rect.x = int(distance)
         enemy.rect.y = screen.get_height() * (5/8)
         enemies.add(enemy)
         
@@ -77,8 +73,13 @@ def init(screen):
 
     user_interface.init()
 
+    transitionShadow1 = pygame.image.load("intro/shadow.png")
+    transitionShadow2 = pygame.transform.flip(transitionShadow1, False, True)
+
 def leave(screen):
-    pass
+    global transitionPercent, transitionSurf1, transitionSurf2
+    transitionPercent = 0.0
+    transitionSurf1 = transitionSurf2 = None
 
 def onEvent(e):
     global face
@@ -112,9 +113,9 @@ def onEvent(e):
             group_knives.add(effects.Knife(1000, -1))
             
     elif e.type == pygame.KEYUP:
-        if (e.key == pygame.K_a or e.key == pygame.K_LEFT) and face =="E" :
+        if e.key == pygame.K_a and face =="E":
             player.speed[0] = 0
-        elif (e.key == pygame.K_d or e.key == pygame.K_RIGHT) and face == "W" :
+        elif e.key == pygame.K_d and face == "W":
             player.speed[0] = 0
         elif e.key == pygame.K_SPACE:
             if face == "W":
@@ -123,7 +124,17 @@ def onEvent(e):
                 player.image = pygame.image.load("char_data/mainchar_idle.png")
 
 def draw(screen,millis):
-    global diff, endHasBeenReached,enemies
+    global diff, endHasBeenReached, enemies
+    global transitionPercent, transitionSurf1, transitionSurf2
+
+    if not transitionSurf1 or not transitionSurf2:
+        scopy = screen.copy()
+        transitionSurf1 = scopy.subsurface((0, 0,
+                                            screen.get_width(),
+                                            screen.get_height()//2))
+        transitionSurf2 = scopy.subsurface((0, screen.get_height()//2,
+                                            screen.get_width(),
+                                            screen.get_height()//2))
 
     if diff + screen.get_width() >= maxX:
         endHasBeenReached = True
@@ -171,3 +182,13 @@ def draw(screen,millis):
     group_knives.draw(screen)
     
     user_interface.draw_ui(screen)
+    
+    if transitionPercent < 100.0:
+        transitionPercent += millis / 10
+        
+        h = screen.get_height() / 2
+        addY = h * transitionPercent // 100
+        screen.blit(transitionShadow1, (0, h - addY))
+        screen.blit(transitionShadow2, (0, h + addY - transitionShadow2.get_height()))
+        screen.blit(transitionSurf1, (0, 0), (0, addY, screen.get_width(), h))
+        screen.blit(transitionSurf2, (0, h + addY), (0, addY, screen.get_width(), h))
