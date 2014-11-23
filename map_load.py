@@ -62,7 +62,7 @@ while True:
 
     for i in range(len(sky_line)):
         screen.blit(sky_surfaces[int(sky_line[i])],(i*500,(height*0)))
-        screen.blit(background_surfaces[int(background_line[i])],(i*500,(height*1/4)))
+        screen.blit(background_surfaces[int(background_line[i])],(i*500,(height*0+130)))
         screen.blit(close_objects_surfaces[int(close_objects_line[i])],(i*500,height*1/4))
         screen.blit(ground_surfaces[int(ground_line[i])], (i * 500, (height) * 3/4))
 
