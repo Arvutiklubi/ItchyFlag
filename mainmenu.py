@@ -19,6 +19,8 @@ def init(screen):
     global changeSound
     global yellowBox
     global mute
+    global fullscreen
+    global redBox
     pygame.mixer.init()
     menupic = pygame.image.load("image_data/background/menuBackground.png").convert()
     changeSound = pygame.mixer.Sound("sounds/menuButtonChange.wav")
@@ -28,6 +30,8 @@ def init(screen):
     menuscreen = 0
     yellowBox = False
     mute = False
+    fullscreen = False
+    redBox = False
     fontobject = pygame.font.SysFont('Arial', 24)
     
 def onEvent(event):
@@ -37,6 +41,8 @@ def onEvent(event):
     global n
     global yellowBox
     global mute
+    global fullscreen
+    global redBox
     if pygame.mouse.get_pos()[0] > 600 and pygame.mouse.get_pos()[0] < 700 and pygame.mouse.get_pos()[1] > 300 and pygame.mouse.get_pos()[1] < 350 and n >= 0:
         choice = 0
     elif pygame.mouse.get_pos()[0] > 600 and pygame.mouse.get_pos()[0] < 700 and pygame.mouse.get_pos()[1] > 350 and pygame.mouse.get_pos()[1] < 400 and n >=1:
@@ -50,7 +56,13 @@ def onEvent(event):
             choice +=1
         elif event.type == pygame.KEYDOWN and (event.key == pygame.K_w or event.key == pygame.K_UP)and choice > 0:
             choice -=1
-    
+
+    if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE and menuscreen != 0:
+        playsound(changeSound)
+        menuscreen = 0
+        choice = 0
+        n = 3
+        
     #valikud main menu juures
     if ((event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN) or (event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pos()[0] > 600 and pygame.mouse.get_pos()[0] < 700 and pygame.mouse.get_pos()[1] > 300 and pygame.mouse.get_pos()[1] < 500)) and menuscreen == 0:
         playsound(changeSound)
@@ -71,20 +83,14 @@ def onEvent(event):
             main.quit()
             
     #valikud optionsi juures
-    elif ((event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN) or (event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pos()[0] > 600 and pygame.mouse.get_pos()[0] < 700 and pygame.mouse.get_pos()[1] > 300 and pygame.mouse.get_pos()[1] < 500)) and (menuscreen == 1 or menuscreen == 2):
+    elif ((event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN) or (event.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pos()[0] > 600 and pygame.mouse.get_pos()[0] < 700 and pygame.mouse.get_pos()[1] > 300 and pygame.mouse.get_pos()[1] < 350)) and (menuscreen == 1 or menuscreen == 2):
         playsound(changeSound)
         if choice == 0:
             menuscreen = 0
             n = 3
             
-    if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE and menuscreen != 0:
-        playsound(changeSound)
-        menuscreen = 0
-        choice = 0
-        n = 3
-        
     #optionsi kraam
-    if pygame.mouse.get_pos()[0] > 577 and pygame.mouse.get_pos()[0] < 595 and pygame.mouse.get_pos()[1] > 362 and pygame.mouse.get_pos()[1] < 380 and menuscreen == 1:
+    elif pygame.mouse.get_pos()[0] > 577 and pygame.mouse.get_pos()[0] < 595 and pygame.mouse.get_pos()[1] > 362 and pygame.mouse.get_pos()[1] < 380 and menuscreen == 1:
         yellowBox = True
         
         if event.type == pygame.MOUSEBUTTONDOWN and mute == False:
@@ -93,12 +99,22 @@ def onEvent(event):
         elif event.type == pygame.MOUSEBUTTONDOWN and mute == True:
             mute = False
             
+    elif pygame.mouse.get_pos()[0] > 570 and pygame.mouse.get_pos()[0] < 590 and pygame.mouse.get_pos()[1] > 390 and pygame.mouse.get_pos()[1] < 410 and menuscreen == 1:        
+        redBox = True
+        if event.type == pygame.MOUSEBUTTONDOWN and fullscreen == True:
+            fullscreen = False
+            main.screen = pygame.display.set_mode((1280, 720)) 
+        elif event.type == pygame.MOUSEBUTTONDOWN and fullscreen == False:
+            fullscreen = True
+            main.screen = pygame.display.set_mode((1280, 720), pygame.FULLSCREEN)
     else:
         yellowBox = False
+        redBox = False
 def draw(screen,ms):
     global menupic
     global choice1
     global yellowBox
+    global redBox
     screen.fill( (0,0,0) )
     menupic.set_alpha(100)
     screen.blit(menupic, (0,0))
@@ -116,10 +132,14 @@ def draw(screen,ms):
         screen.blit(fontobject.render("Back", 1, (255, 255, 255)),(600, 300))
         pygame.draw.rect(screen, (255,255,255),(570,355,20,20),2)
         screen.blit(fontobject.render("Mute", 1, (255, 255, 255)),(600, 350))
+        pygame.draw.rect(screen, (255,255,255),(570,390,20,20),2)
+        screen.blit(fontobject.render("Fullscreen", 1, (255, 255, 255)),(600, 385))
         if mute == True:
             pygame.draw.rect(screen, (255,255,255),(574,359,13,13))
         if yellowBox == True:
             pygame.draw.rect(screen, (255,255,0),(572,357,17,17),2)
+        if redBox == True:
+            pygame.draw.rect(screen, (255, 0, 0), (572, 392, 17, 17),2)
             
     #credits
     elif menuscreen == 2:
