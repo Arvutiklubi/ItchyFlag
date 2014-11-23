@@ -1,4 +1,4 @@
-import pygame, math, character, user_interface
+import pygame, math,character
 
 def init(screen):
     
@@ -48,8 +48,6 @@ def init(screen):
     maxX = len(sky_line) * 500
     face = "W"
 
-    user_interface.init()
-
 def onEvent(e):
     global face
 
@@ -86,9 +84,10 @@ def draw(screen,ms):
         screen.blit(close_objects_surfaces[int(close_objects_line[i])],(i*500 - diff,screen.get_height()*1/4))
         screen.blit(ground_surfaces[int(ground_line[i])], (i * 500 - diff, (screen.get_height()) * 3/4))
 
+
     for i in range(len(enemy_line)):
-        if diff>i:
-            screen.blit(enemy_ranged,(i,screen.get_height() * (5/8)))
+        if diff>int(enemy_line[i]):
+            screen.blit(enemy_ranged,(screen.get_width()-200,screen.get_height() * (5/8)))
     
     if player.rect.x > screen.get_width()/2 and not endHasBeenReached:
         diff += 10
@@ -96,4 +95,3 @@ def draw(screen,ms):
 
     group.update()
     group.draw(screen)
-    user_interface.draw_ui(screen)
