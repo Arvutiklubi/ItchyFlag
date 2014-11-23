@@ -1,7 +1,7 @@
 import pygame, sys
 
 import sharedvars
-import intro, mainmenu,map_load
+import intro, mainmenu,map_load, in_game_menu
 
 def setState(state):
 	sharedvars.state = state
@@ -19,6 +19,7 @@ if __name__ == '__main__':
 	intro.init(screen)
 	map_load.init(screen)
 	mainmenu.init(screen)
+	in_game_menu.init(screen)
 	sharedvars.state = intro
 
 	while True:
