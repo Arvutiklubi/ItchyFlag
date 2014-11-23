@@ -69,11 +69,18 @@ while True:
     screen.blit(sky_surfaces[1],(0,0))
 
     for i in range(len(sky_line)):
+<<<<<<< HEAD
         screen.blit(sky_surfaces[int(sky_line[i])],(i*500 - diff,(height*0)))
         screen.blit(background_surfaces[int(background_line[i])],(i*500 - diff,(height*1/4)))
         screen.blit(close_objects_surfaces[int(close_objects_line[i])],(i*500 - diff,height*1/4))
         screen.blit(ground_surfaces[int(ground_line[i])], (i * 500 - diff, (height) * 3/4))
 
+=======
+        screen.blit(sky_surfaces[int(sky_line[i])],(i*500,(height*0)))
+        screen.blit(background_surfaces[int(background_line[i])],(i*500,(height*0+130)))
+        screen.blit(close_objects_surfaces[int(close_objects_line[i])],(i*500,height*1/4))
+        screen.blit(ground_surfaces[int(ground_line[i])], (i * 500, (height) * 3/4))
+>>>>>>> f9935df4a51aaa1d0a6067a82a8124c38d511eb2
 
     if player.rect.x > width/2 and not endHasBeenReached:
         diff += 10
