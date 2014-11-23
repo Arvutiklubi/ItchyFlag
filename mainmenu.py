@@ -1,5 +1,9 @@
 import pygame
 import main
+from random import randint
+
+bgPosX = bgPosY = 0
+bgSpeedX = bgSpeedY = 0
 
 def playsound(sound):
     global mute
@@ -15,14 +19,17 @@ def init(screen):
     #maksimum valikute arv lehel
     global n
     global menupic
+    global radialGradPic
     global changeSound
     global yellowBox
     global mute
     global fullscreen
     global redBox
-        
+    global bgSpeedX, bgSpeedY
+
     pygame.mixer.init()
     menupic = pygame.image.load("image_data/background/menuBackground.png").convert()
+    radialGradPic = pygame.image.load("intro/shadow_inmenu.png").convert_alpha()
     changeSound = pygame.mixer.Sound("sounds/menuButtonChange.wav")
     choice = 0
     choice1 = 0
@@ -41,6 +48,9 @@ def init(screen):
     
     redBox = False
     fontobject = pygame.font.SysFont('Arial', 24)
+
+    bgSpeedX = randint(5, 15)
+    bgSpeedY = randint(5, 15)
     
 def onEvent(event):
     
@@ -126,9 +136,25 @@ def draw(screen,ms):
     global choice1
     global yellowBox
     global redBox
+    global bgPosX, bgPosY, bgSpeedX, bgSpeedY
     screen.fill( (0,0,0) )
     menupic.set_alpha(100)
-    screen.blit(menupic, (0,0))
+    bgPosX += bgSpeedX * ms / 1000
+    bgPosY += bgSpeedY * ms / 1000
+    if bgPosX < 0:
+        bgPosX = 0
+        bgSpeedX = randint(5, 15)
+    elif bgPosX >= menupic.get_width()-screen.get_width():
+        bgPosX = menupic.get_width()-screen.get_width()
+        bgSpeedX = -randint(5, 15)
+    if bgPosY < 0:
+        bgPosY = 0
+        bgSpeedY = randint(5, 15)
+    elif bgPosY >= menupic.get_height() - screen.get_height():
+        bgPosY = menupic.get_height()-screen.get_height()
+        bgSpeedY = -randint(5, 15)
+    screen.blit(menupic, (0,0), (bgPosX, bgPosY, screen.get_width(), screen.get_height()))
+    screen.blit(radialGradPic, (0, 0))
     #mainmenu
     if menuscreen == 0:
         screen.blit(fontobject.render("Start game", 1, (255, 255, 255)),(600, 300))
