@@ -1,7 +1,7 @@
 import pygame, sys
 
 import sharedvars
-import intro, mainmenu
+import intro, mainmenu,map_load
 
 def setState(state):
 	sharedvars.state = state
@@ -17,6 +17,7 @@ if __name__ == '__main__':
 	clock = pygame.time.Clock()
 
 	intro.init(screen)
+	map_load.init(screen)
 	mainmenu.init(screen)
 	sharedvars.state = intro
 
@@ -31,3 +32,4 @@ if __name__ == '__main__':
 		
 		sharedvars.state.draw(screen, ms)
 		pygame.display.flip()
+		print(sharedvars.state)
