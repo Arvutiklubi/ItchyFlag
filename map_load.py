@@ -46,6 +46,7 @@ f.close()
 diff = 0
 endHasBeenReached = False
 maxX = len(sky_line) * 500
+face = "W"
 
 while True:
     for e in pygame.event.get():
@@ -57,9 +58,15 @@ while True:
             #elif e.key == pygame.K_s:
                     #player.speed[1] = 10
             if e.key == pygame.K_d:
-                    player.speed[0] = 10
+                if face == "E":
+                    player.image = pygame.transform.flip(player.image,1,0)
+                player.speed[0] = 10
+                face = "W"
             elif e.key == pygame.K_a:
-                    player.speed[0] = -10
+                if face == "W":
+                    player.image = pygame.transform.flip(player.image,1,0)
+                player.speed[0] = -10
+                face = "E" 
         elif e.type == pygame.KEYUP:
                 player.speed[0] = 0
                 player.speed[1] = 0
