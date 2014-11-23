@@ -13,8 +13,17 @@ sky_surfaces = {
         1 : pygame.image.load("image_data/sky/taevas1.png").convert_alpha()
     }
 background_surfaces = {
+<<<<<<< HEAD
+        1 : pygame.image.load("image_data/background/taust1.png"),
+        2 : pygame.image.load("image_data/background/taust2.png")
+    }
+close_objects_surfaces = {
+        1 : pygame.image.load("image_data/close_objects/tree1.png"),
+        2 : pygame.image.load("image_data/close_objects/tree2.png")
+=======
         1 : pygame.image.load("image_data/background/taust1.png").convert_alpha(),
         2 : pygame.image.load("image_data/background/tree1.png").convert_alpha()
+>>>>>>> c259acc54a96b1822d59c3e4c4553db0bd37bf95
     }
 ground_surfaces = {
         1 : pygame.image.load("image_data/ground/maapind1.png").convert_alpha()
@@ -60,9 +69,16 @@ while True:
     screen.blit(sky_surfaces[1],(0,0))
     
     for i in range(len(sky_line)):
+<<<<<<< HEAD
+        screen.blit(sky_surfaces[int(sky_line[i])],(i*500,(height*0)))
+        screen.blit(background_surfaces[int(background_line[i])],(i*500,(height*1/4)))
+        screen.blit(close_objects_surfaces[int(background_line[i])],(i*500,height*1/4)))
+        screen.blit(ground_surfaces[int(ground_line[i])], (i * 500, (height) * 3/4))
+=======
         screen.blit(sky_surfaces[int(sky_line[i])],(i*500 - diff,(height*0)))
         screen.blit(background_surfaces[int(background_line[i])],(i*500 - diff,(height*1/4)))
         screen.blit(ground_surfaces[int(ground_line[i])], (i * 500 - diff, (height) * 3/4))
+>>>>>>> c259acc54a96b1822d59c3e4c4553db0bd37bf95
 
     if player.rect.x > width/2:
         diff += 10
