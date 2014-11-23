@@ -12,7 +12,7 @@ def init(screen):
     global sky_line, background_line,enemy_line,enemy_ranged
     global close_objects_line, ground_line
     global diff, maxX, face, endHasBeenReached
-    global group_knives
+    global group_knives,enemies
     
     sky_surfaces = {
             1 : pygame.image.load("image_data/sky/taevas1.png").convert_alpha(),
@@ -35,7 +35,6 @@ def init(screen):
         }
 
     player = character.Player("char_data/mainchar_idle.png")
-    enemy_ranged = pygame.image.load("mob_data/creep_ranged.png")
 
     player.rect.y = screen.get_height() * (5/8)
     player.rect.x = 50
@@ -43,6 +42,8 @@ def init(screen):
 
     group = pygame.sprite.Group()
     group_knives = pygame.sprite.Group()
+    
+    enemies = pygame.sprite.Group()
 
     group.add(player)
 
@@ -53,6 +54,13 @@ def init(screen):
     ground_line = f.readline().strip()
     enemy_line = f.readline().strip().split()
     f.close()
+
+    for distance in enemy_line:
+        enemy = character.Zombie("mob_data/creep_ranged.png")
+        enemy.rect.x = int(distance)
+        enemy.rect.y = screen.get_height() * (5/8)
+        enemies.add(enemy)
+        
 
     diff = 0
     endHasBeenReached = False
@@ -103,7 +111,7 @@ def onEvent(e):
                 player.image = pygame.image.load("char_data/mainchar_idle.png")
 
 def draw(screen,millis):
-    global diff, endHasBeenReached
+    global diff, endHasBeenReached,enemies
 
     if diff + screen.get_width() >= maxX:
         endHasBeenReached = True
@@ -121,15 +129,12 @@ def draw(screen,millis):
         screen.blit(background_surfaces[int(background_line[i])],(i*500 - diff,(130)))
         screen.blit(close_objects_surfaces[int(close_objects_line[i])],(i*500 - diff,screen.get_height()*1/4))
         screen.blit(ground_surfaces[int(ground_line[i])], (i * 500 - diff, (screen.get_height()) * 3/4))
-
-
-    for i in range(len(enemy_line)):
-        if diff>int(enemy_line[i]):
-            screen.blit(enemy_ranged,(screen.get_width()-200,screen.get_height() * (5/8)))
     
     if player.rect.x > screen.get_width()/2 and not endHasBeenReached:
         diff += 10
         player.rect.x -= 10
+        for enemy in enemies:
+            enemy.rect.x -= 10
 
     if player.rect.x > screen.get_width() - 150:
         player.rect.x = screen.get_width() - 150
@@ -138,6 +143,15 @@ def draw(screen,millis):
 
     group.update(millis)
     group.draw(screen)
+
+    #joonistame vastased ekraanile
+   
+    for enemy in enemies:
+        enemy.updateAI(player.rect.x, 2000 ,millis,diff,screen.get_width())
+    enemies.update(millis)       
+    enemies.draw(screen)
+    
     group_knives.update(millis, diff)
     group_knives.draw(screen)
+    
     user_interface.draw_ui(screen)
