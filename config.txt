@@ -1,2 +1,1 @@
-fullscreen=True
-mute=True
+fullscreen=False
