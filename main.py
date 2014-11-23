@@ -1,9 +1,20 @@
 import pygame, sys
 
 import sharedvars
-import intro, mainmenu,map_load
+import intro, mainmenu, map_load, in_game_menu
 
+initializedStates = []
+
+screen = None
+
+def initState(state):
+        global screen
+        if not state in initializedStates:
+                state.init(screen)
+                initializedStates.append(state)
+                
 def setState(state):
+        initState(state)
         sharedvars.state = state
 
 def quit():
@@ -12,14 +23,13 @@ def quit():
 
 if __name__ == '__main__':
         pygame.init()
-        
+
+        global screen
         screen = pygame.display.set_mode((1280, 720), pygame.SRCALPHA)
         clock = pygame.time.Clock()
 
-        intro.init(screen)
-        map_load.init(screen)
-        mainmenu.init(screen)
-        sharedvars.state = intro
+        initState(mainmenu)
+        setState(intro)
 
         if mainmenu.fullscreen == "True":
                 screen = pygame.display.set_mode((1280, 720), pygame.FULLSCREEN)
@@ -36,6 +46,7 @@ if __name__ == '__main__':
 
                 ms = clock.tick(sharedvars.fps)
 
+                print(screen)
                 sharedvars.state.draw(screen, ms)
                 pygame.display.flip()
 

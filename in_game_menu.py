@@ -1,5 +1,7 @@
 import pygame, main
 
+backgroundSurface = None
+
 def playsound(sound):
     global mute
     if mute == False:
@@ -26,6 +28,7 @@ def onEvent(event):
     global choice
     global n
     global menuscreen
+    global backgroundSurface
     if pygame.mouse.get_pos()[0] > 600 and pygame.mouse.get_pos()[0] < 700 and pygame.mouse.get_pos()[1] > 300 and pygame.mouse.get_pos()[1] < 350 and n >= 0:
         choice = 0
     elif pygame.mouse.get_pos()[0] > 600 and pygame.mouse.get_pos()[0] < 700 and pygame.mouse.get_pos()[1] > 350 and pygame.mouse.get_pos()[1] < 400 and n >=1:
@@ -51,8 +54,10 @@ def onEvent(event):
 def draw(screen,ms):
     global choice1
     global backgroundSurface
+    global fontobject
     if backgroundSurface == None:
         backgroundSurface = screen.copy()
+    print(fontobject)
     screen.blit(backgroundSurface,(0,0))
     screen.blit(fontobject.render("Back to game", 1, (255, 255, 255)),(600, 300))
     screen.blit(fontobject.render("Options", 1, (255, 255, 255)),(600, 350))

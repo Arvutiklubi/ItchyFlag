@@ -1,7 +1,8 @@
 import pygame
-import main
 
 def init(screen):
+    global main
+    import main
     global intropic
     intropic = pygame.image.load("intro/intro.png").convert()
 
@@ -11,6 +12,7 @@ def onEvent(event):
         fadeIn = False
         
 def draw(screen, ms):
+    global main
     global fade
     global fadeIn
     global intropic
