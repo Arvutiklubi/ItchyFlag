@@ -5,6 +5,9 @@ def init(screen):
     global intropic
     intropic = pygame.image.load("intro/intro.png").convert()
 
+def leave(screen):
+    pass
+
 def onEvent(event):
     global fadeIn
     if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:

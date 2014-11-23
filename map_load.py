@@ -69,6 +69,9 @@ def init(screen):
 
     user_interface.init()
 
+def leave(screen):
+    pass
+
 def onEvent(e):
     global face
     global group_knives

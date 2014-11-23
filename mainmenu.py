@@ -55,6 +55,9 @@ def init(screen):
 
     bgSpeedX = randint(5, 15)
     bgSpeedY = randint(5, 15)
+
+def leave(screen):
+    pass
     
 def onEvent(event):
     
