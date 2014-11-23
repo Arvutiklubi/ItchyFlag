@@ -70,12 +70,12 @@ def onEvent(e):
                 #player.speed[1] = -10
         #elif e.key == pygame.K_s:
                 #player.speed[1] = 10
-        if e.key == pygame.K_d:
+        if e.key == pygame.K_d or e.key == pygame.K_RIGHT:
             if face == "E":
                 player.image = flip(player.image)
             player.speed[0] = 10
             face = "W"
-        elif e.key == pygame.K_a:
+        elif e.key == pygame.K_a or e.key == pygame.K_LEFT:
             if face == "W":
                 player.image = flip(player.image)
             player.speed[0] = -10
