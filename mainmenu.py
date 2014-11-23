@@ -4,11 +4,10 @@ from random import randint
 
 bgPosX = bgPosY = 0
 bgSpeedX = bgSpeedY = 0
-bgAlpha = 0
 
 def playsound(sound):
     global mute
-    if mute == False:
+    if mute == "False":
         pygame.mixer.Sound.play(sound)
 
 def init(screen):
@@ -32,6 +31,7 @@ def init(screen):
     
     mouseMoved = pygame.mouse.get_pos()
     pygame.mixer.init()
+    
     menupic = pygame.image.load("image_data/background/menuBackground.png").convert()
     radialGradPic = pygame.image.load("intro/shadow_inmenu.png").convert_alpha()
     changeSound = pygame.mixer.Sound("sounds/menuButtonChange.wav")
@@ -40,24 +40,21 @@ def init(screen):
     n = 3
     menuscreen = 0
     yellowBox = False
-    mute = False
     
     config = {}
     fail = open("config.txt")
     for line in fail:
         line = line.split("=")
-        config[line[0]] = line[1]
+        config[line[0]] = line[1].strip()
     fail.close()
     fullscreen = config["fullscreen"]
+    mute = config["mute"]
     
     redBox = False
     fontobject = pygame.font.SysFont('Arial', 24)
 
     bgSpeedX = randint(5, 15)
     bgSpeedY = randint(5, 15)
-
-    bgOverlaySurf = screen.copy()
-    bgOverlaySurf.fill((0, 0, 0))
     
 def onEvent(event):
     
@@ -112,7 +109,8 @@ def onEvent(event):
         elif choice == 3:
             #Quit game
             fail = open("config.txt", "w")
-            fail.write("fullscreen="+ fullscreen)
+            fail.write("fullscreen="+ fullscreen+ "\n")
+            fail.write("mute="+ mute)
             fail.close()
             main.quit()
             
@@ -127,14 +125,15 @@ def onEvent(event):
     if choice == 1 and menuscreen == 1:
         yellowBox = True
         
-        if((event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN) or  event.type == pygame.MOUSEBUTTONDOWN) and mute == False:
-            mute = True
+        if((event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN) or  event.type == pygame.MOUSEBUTTONDOWN) and mute == "False":
+            mute = "True"
             
-        elif ((event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN) or event.type == pygame.MOUSEBUTTONDOWN) and mute == True:
-            mute = False
+        elif ((event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN) or event.type == pygame.MOUSEBUTTONDOWN) and mute == "True":
+            mute = "False"
             
     elif choice == 2 and menuscreen == 1:        
         redBox = True
+
         if ((event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN) or event.type == pygame.MOUSEBUTTONDOWN) and fullscreen == "True":
             fullscreen = "False"
             main.screen = pygame.display.set_mode((1280, 720)) 
@@ -144,14 +143,14 @@ def onEvent(event):
     else:
         yellowBox = False
         redBox = False
-        
 def draw(screen,ms):
     global menupic
     global choice1
     global yellowBox
     global redBox
     global fullscreen
-    global bgPosX, bgPosY, bgSpeedX, bgSpeedY, bgAlpha, bgOverlaySurf
+    global mute
+    global bgPosX, bgPosY, bgSpeedX, bgSpeedY
     screen.fill( (0,0,0) )
     menupic.set_alpha(100)
     bgPosX += bgSpeedX * ms / 1000
@@ -170,10 +169,6 @@ def draw(screen,ms):
         bgSpeedY = -randint(5, 15)
     screen.blit(menupic, (0,0), (bgPosX, bgPosY, screen.get_width(), screen.get_height()))
     screen.blit(radialGradPic, (0, 0))
-    if bgAlpha < 255:
-        bgAlpha += ms / 5
-        bgOverlaySurf.set_alpha(255 - bgAlpha)
-        screen.blit(bgOverlaySurf, (0, 0))
     #mainmenu
     if menuscreen == 0:
         screen.blit(fontobject.render("Start game", 1, (255, 255, 255)),(600, 300))
@@ -191,7 +186,7 @@ def draw(screen,ms):
         screen.blit(fontobject.render("Mute", 1, (255, 255, 255)),(600, 350))
         pygame.draw.rect(screen, (255,255,255),(570,390,20,20),2)
         screen.blit(fontobject.render("Fullscreen", 1, (255, 255, 255)),(600, 385))
-        if mute == True:
+        if mute == "True":
             pygame.draw.rect(screen, (255,255,255),(574,359,13,13))
         if yellowBox == True and choice == 1:
             pygame.draw.rect(screen, (255,255,0),(572,357,17,17),2)
