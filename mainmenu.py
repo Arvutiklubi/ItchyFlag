@@ -48,8 +48,8 @@ def init(screen):
         line = line.split("=")
         config[line[0]] = line[1].strip()
     fail.close()
-    fullscreen = config["fullscreen"]
-    mute = config["mute"]
+    fullscreen = "fullscreen" in config and config["fullscreen"]
+    mute = "mute" in config and config["mute"]
     
     redBox = False
     fontobject = pygame.font.SysFont('Arial', 24)
