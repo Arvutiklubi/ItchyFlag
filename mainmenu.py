@@ -123,9 +123,11 @@ def onEvent(event):
     elif pygame.mouse.get_pos()[0] > 570 and pygame.mouse.get_pos()[0] < 590 and pygame.mouse.get_pos()[1] > 390 and pygame.mouse.get_pos()[1] < 410 and menuscreen == 1:        
         redBox = True
         if event.type == pygame.MOUSEBUTTONDOWN and fullscreen == "True":
+            print("onbutton")
             fullscreen = "False"
             main.screen = pygame.display.set_mode((1280, 720)) 
         elif event.type == pygame.MOUSEBUTTONDOWN and fullscreen == "False":
+            print("onbutton2")
             fullscreen = "True"
             main.screen = pygame.display.set_mode((1280, 720), pygame.FULLSCREEN)
     else:
@@ -136,6 +138,7 @@ def draw(screen,ms):
     global choice1
     global yellowBox
     global redBox
+    global fullscreen
     global bgPosX, bgPosY, bgSpeedX, bgSpeedY
     screen.fill( (0,0,0) )
     menupic.set_alpha(100)
