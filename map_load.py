@@ -88,7 +88,7 @@ def onEvent(e):
             else:
                 player.image = pygame.image.load("char_data/mainchar_idle.png")
 
-def draw(screen,milliss):
+def draw(screen,millis):
     global diff, endHasBeenReached
 
     if diff + screen.get_width() >= maxX:
