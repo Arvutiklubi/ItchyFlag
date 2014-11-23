@@ -16,17 +16,22 @@ def init(screen):
     
     sky_surfaces = {
             1 : pygame.image.load("image_data/sky/taevas1.png").convert_alpha(),
+            2 : pygame.image.load("image_data/sky/taevas2.png").convert_alpha(),
         }
     background_surfaces = {
             1 : pygame.image.load("image_data/background/taust1.png").convert_alpha(),
             2 : pygame.image.load("image_data/background/taust2.png").convert_alpha(),
+            3 : pygame.image.load("image_data/background/taust3.png").convert_alpha(),
+            4 : pygame.image.load("image_data/background/taust4.png").convert_alpha(),
         }
     close_objects_surfaces = {
             1 : pygame.image.load("image_data/close_objects/tree1.png").convert_alpha(),
             2 : pygame.image.load("image_data/close_objects/tree2.png").convert_alpha(),
+            3 : pygame.image.load("image_data/close_objects/tree3.png").convert_alpha(),
         }
     ground_surfaces = {
             1 : pygame.image.load("image_data/ground/maapind1.png").convert_alpha(),
+            2 : pygame.image.load("image_data/ground/maapind2.png").convert_alpha(),
         }
 
     player = character.Player("char_data/mainchar_idle.png")
@@ -65,12 +70,12 @@ def onEvent(e):
                 #player.speed[1] = -10
         #elif e.key == pygame.K_s:
                 #player.speed[1] = 10
-        if e.key == pygame.K_d:
+        if e.key == pygame.K_d or e.key == pygame.K_RIGHT:
             if face == "E":
                 player.image = flip(player.image)
             player.speed[0] = 10
             face = "W"
-        elif e.key == pygame.K_a:
+        elif e.key == pygame.K_a or e.key == pygame.K_LEFT:
             if face == "W":
                 player.image = flip(player.image)
             player.speed[0] = -10
@@ -109,9 +114,10 @@ def draw(screen,millis):
     if player.speed[0] < 0:
         player.image = player.runningAnimation("E")
     
-    screen.blit(sky_surfaces[1],(0,0))
+    #screen.blit(sky_surfaces[1],(0,0))
 
     for i in range(len(sky_line)):
+        screen.blit(sky_surfaces[int(sky_line[i])],(i*1280,0))
         screen.blit(background_surfaces[int(background_line[i])],(i*500 - diff,(130)))
         screen.blit(close_objects_surfaces[int(close_objects_line[i])],(i*500 - diff,screen.get_height()*1/4))
         screen.blit(ground_surfaces[int(ground_line[i])], (i * 500 - diff, (screen.get_height()) * 3/4))
