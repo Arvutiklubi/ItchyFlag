@@ -1,4 +1,4 @@
-import pygame, math, character, user_interface, main
+import pygame, math, character, user_interface, main, effects
 
 def flip(img):
     aimg = pygame.transform.flip(img,1,0)
@@ -12,6 +12,7 @@ def init(screen):
     global sky_line, background_line,enemy_line,enemy_ranged
     global close_objects_line, ground_line
     global diff, maxX, face, endHasBeenReached
+    global group_knives
     
     sky_surfaces = {
             1 : pygame.image.load("image_data/sky/taevas1.png").convert_alpha(),
@@ -36,6 +37,7 @@ def init(screen):
     player.image = pygame.transform.flip(player.image,1,0)
 
     group = pygame.sprite.Group()
+    group_knives = pygame.sprite.Group()
 
     group.add(player)
 
@@ -52,8 +54,11 @@ def init(screen):
     maxX = len(sky_line) * 500
     face = "W"
 
+    user_interface.init()
+
 def onEvent(e):
     global face
+    global group_knives
 
     if e.type == pygame.KEYDOWN:
         #if e.key == pygame.K_w:
@@ -76,8 +81,12 @@ def onEvent(e):
             else:
                 player.image = pygame.image.load("char_data/mainchar_attack.png")
 
-        if e.key == pygame.K_ESCAPE or e.key == pygame.K_p:
+        elif e.key == pygame.K_ESCAPE or e.key == pygame.K_p:
             main.setState(main.in_game_menu)
+
+        elif e.key == pygame.K_h:
+            group_knives.add(effects.Knife(1000, -1, (0, 0)))
+            
     elif e.type == pygame.KEYUP:
         player.speed[0] = 0
         player.speed[1] = 0
@@ -88,7 +97,7 @@ def onEvent(e):
             else:
                 player.image = pygame.image.load("char_data/mainchar_idle.png")
 
-def draw(screen,milliss):
+def draw(screen,millis):
     global diff, endHasBeenReached
 
     if diff + screen.get_width() >= maxX:
@@ -118,3 +127,6 @@ def draw(screen,milliss):
 
     group.update(millis)
     group.draw(screen)
+    group_knives.update(millis, diff)
+    group_knives.draw(screen)
+    user_interface.draw_ui(screen)
