@@ -112,9 +112,9 @@ def onEvent(e):
             group_knives.add(effects.Knife(1000, -1))
             
     elif e.type == pygame.KEYUP:
-        if e.key == pygame.K_a and face =="E":
+        if (e.key == pygame.K_a or e.key == pygame.K_LEFT) and face =="E" :
             player.speed[0] = 0
-        elif e.key == pygame.K_d and face == "W":
+        elif (e.key == pygame.K_d or e.key == pygame.K_RIGHT) and face == "W" :
             player.speed[0] = 0
         elif e.key == pygame.K_SPACE:
             if face == "W":
