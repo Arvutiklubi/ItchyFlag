@@ -32,13 +32,10 @@ class Character(pygame.sprite.Sprite):
                 self.curAnim = 3
                 self.prevAnim = 3
             elif self.prevAnim == 3:
-                self.curAnim = 4
-                self.prevAnim = 4
-            elif self.prevAnim == 4:
                 self.curAnim = 0
                 self.prevAnim = 0
                 
-            self.waitTime = 200     
+            self.waitTime = 100     
 
 class Player(Character):
     
@@ -52,7 +49,7 @@ class Player(Character):
         self.mainSurface = pygame.image.load("char_data/mainchar_run.png")
         self.animations = []
 
-        for a in range(0,5):
+        for a in range(0,4):
             self.animations.append(self.mainSurface.subsurface(a * 200,0, 200,200))
 
     def runningAnimation(self,face):
@@ -67,3 +64,33 @@ class Zombie(Character):
     def __init__(self,imgFile):
         Character.__init__(self,imgFile)
         self.health = 50
+        self.range = 50
+        self.time_waited = 0
+        self.to_move,self.to_attack = False,False
+        self.hasBeenSeen = False
+
+    def updateAI(self,playerX,difficulty,ms,diff,width):
+        
+        self.to_move = True
+        self.to_attack = False
+
+        if self.rect.x < diff + width:
+            self.hasBeenSeen = True
+        
+        if abs(self.rect.x - playerX) <= self.range:
+            self.to_move = False
+            self.speed[0] = 0
+            
+            self.time_waited += ms
+
+            if self.time_waited > difficulty:
+                self.to_attack = True
+        
+        elif self.to_move and self.hasBeenSeen:
+            if self.rect.x - playerX > 0:
+                self.speed[0] = -2
+            elif self.rect.x - playerX < 0:
+                self.speed[0] = 2
+
+        
+        
