@@ -70,17 +70,14 @@ def onEvent(e):
                 player.image = flip(player.image)
             player.speed[0] = -10
             face = "E"
-<<<<<<< HEAD
         elif e.key == pygame.K_SPACE:
             if face == "W":
                 player.image = flip(pygame.image.load("char_data/mainchar_attack.png"))
             else:
                 player.image = pygame.image.load("char_data/mainchar_attack.png")
 
-=======
         if e.key == pygame.K_ESCAPE or e.key == pygame.K_p:
             main.setState(main.in_game_menu)
->>>>>>> 604f6acb8c1c9e5ca7da186efbc88c44cc26b13b
     elif e.type == pygame.KEYUP:
         player.speed[0] = 0
         player.speed[1] = 0
@@ -89,7 +86,7 @@ def onEvent(e):
             if face == "W":
                 player.image = flip(pygame.image.load("char_data/mainchar_idle.png"))
             else:
-                player.image = pygame.image.load("char_data/mainchar_idle.png"
+                player.image = pygame.image.load("char_data/mainchar_idle.png")
 
 def draw(screen,milliss):
     global diff, endHasBeenReached
