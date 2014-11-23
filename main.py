@@ -3,7 +3,12 @@ import pygame, sys
 import sharedvars
 import intro, mainmenu,map_load, in_game_menu
 
+screen = None
+
 def setState(state):
+        global screen
+        if sharedvars.state:
+                sharedvars.state.leave(screen)
         sharedvars.state = state
 
 def quit():
@@ -29,8 +34,7 @@ if __name__ == '__main__':
                 for event in pygame.event.get():
                         if event.type == pygame.QUIT:
                                 fail = open("config.txt", "w")
-                                fail.write("fullscreen="+ mainmenu.fullscreen+ "\n")
-                                fail.write("mute="+ mainmenu.mute)
+                                fail.write("fullscreen="+ mainmenu.fullscreen)
                                 fail.close()
                                 quit()
                         else:

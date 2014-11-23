@@ -22,6 +22,10 @@ def init(screen):
     menuscreen = 0
     n = 2
     fontobject = pygame.font.SysFont('Arial', 24)
+
+def leave(screen):
+    pass
+
 def onEvent(event):
     global choice
     global n
