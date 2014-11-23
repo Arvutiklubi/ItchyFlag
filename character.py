@@ -2,7 +2,7 @@ import pygame,sys
 
 class Character(pygame.sprite.Sprite):
 
-    def __init__(self,imgFile,runFile):
+    def __init__(self,imgFile,runFile = None):
         pygame.init()
         pygame.sprite.Sprite.__init__(self)
 
@@ -10,17 +10,23 @@ class Character(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         
         self.waitTime = 100
-        self.prevAnim = 1
+        self.prevAnim = 0
         self.curAnim = 0
 
         self.speed = [0,0]
 
-        self.mainSurface = pygame.image.load(runFile)
+        if runFile == None:
+            self.mainSurface = pygame.image.load(imgFile)
+        else:
+            self.mainSurface = pygame.image.load(runFile)
         self.animations = []
         self.animLen = int(self.mainSurface.get_rect().width / 200)
 
-        for a in range(0,self.animLen):
-            self.animations.append(self.mainSurface.subsurface(a * 200,0, 200,200))
+        if self.animLen == 1:
+            self.animations.append(self.image)
+        else:
+            for a in range(0,self.animLen):
+                self.animations.append(self.mainSurface.subsurface(a * 200,0, 200,200))
 
     def update(self,ms):
         self.rect.x += self.speed[0]

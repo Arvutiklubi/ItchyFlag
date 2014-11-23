@@ -33,6 +33,11 @@ def init(screen):
             1 : pygame.image.load("image_data/ground/maapind1.png").convert_alpha(),
             2 : pygame.image.load("image_data/ground/maapind2.png").convert_alpha(),
         }
+    mob_data = {
+            1: ["mob_data/creep_ranged.png","mob_data/creep_ranged_run.png"],
+            2: ["mob_data/pakszombi.png", None]
+            
+        }
 
     player = character.Player("char_data/mainchar_idle.png","char_data/mainchar_run.png")
 
@@ -55,9 +60,12 @@ def init(screen):
     enemy_line = f.readline().strip().split()
     f.close()
 
-    for distance in enemy_line:
-        enemy = character.Zombie("mob_data/creep_ranged.png","mob_data/creep_ranged_run.png")
-        enemy.rect.x = int(distance)
+    for a in range(0,len(enemy_line),2):
+        if mob_data[int(enemy_line[a+1])][1] == None:
+            enemy = character.Zombie(mob_data[int(enemy_line[a+1])][0],None)
+        else:
+            enemy = character.Zombie(mob_data[int(enemy_line[a+1])][0],mob_data[int(enemy_line[a+1])][1])
+        enemy.rect.x = int(enemy_line[a])
         enemy.rect.y = screen.get_height() * (5/8)
         enemies.add(enemy)
         
