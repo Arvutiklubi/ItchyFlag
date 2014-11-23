@@ -104,10 +104,11 @@ def onEvent(e):
             group_knives.add(effects.Knife(1000, -1))
             
     elif e.type == pygame.KEYUP:
-        player.speed[0] = 0
-        player.speed[1] = 0
-
-        if e.key == pygame.K_SPACE:
+        if e.key == pygame.K_a and face =="E":
+            player.speed[0] = 0
+        elif e.key == pygame.K_d and face == "W":
+            player.speed[0] = 0
+        elif e.key == pygame.K_SPACE:
             if face == "W":
                 player.image = flip(pygame.image.load("char_data/mainchar_idle.png"))
             else:
