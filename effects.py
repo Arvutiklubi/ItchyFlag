@@ -11,10 +11,10 @@ class Knife(pygame.sprite.Sprite):
 
         self.waitTime = 20 
 
-    def update(self, ms, diff):
+    def update(self, millis, diff):
         if self.rect.left >= 1280 or self.rect.right <= 0:
             self.kill()
-        self.waitTime -= ms
+        self.waitTime -= millis
         if self.waitTime <= 0:
             if self.suund == 1:
                 self.knife_pos += 10
