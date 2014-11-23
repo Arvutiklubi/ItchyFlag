@@ -98,7 +98,7 @@ def onEvent(e):
             main.setState(main.in_game_menu)
 
         elif e.key == pygame.K_h:
-            group_knives.add(effects.Knife(1000, -1, (0, 0)))
+            group_knives.add(effects.Knife(1000, -1))
             
     elif e.type == pygame.KEYUP:
         player.speed[0] = 0
