@@ -125,6 +125,11 @@ def draw(screen,millis):
         diff += 10
         player.rect.x -= 10
 
+    if player.rect.x > screen.get_width() - 150:
+        player.rect.x = screen.get_width() - 150
+    elif player.rect.x < -50:
+        player.rect.x = -50
+
     group.update(millis)
     group.draw(screen)
     group_knives.update(millis, diff)
