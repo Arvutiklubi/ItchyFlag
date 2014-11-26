@@ -34,7 +34,7 @@ if __name__ == '__main__':
                 for event in pygame.event.get():
                         if event.type == pygame.QUIT:
                                 fail = open("config.txt", "w")
-                                fail.write("fullscreen="+ mainmenu.fullscreen)
+                                fail.write("fullscreen="+ str(mainmenu.fullscreen))
                                 fail.close()
                                 quit()
                         else:

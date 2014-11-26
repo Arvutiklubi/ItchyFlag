@@ -10,15 +10,16 @@ class Character(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         
         self.waitTime = 100
-        self.prevAnim = 0
         self.curAnim = 0
 
         self.speed = [0,0]
 
         if runFile == None:
             self.mainSurface = pygame.image.load(imgFile)
+            
         else:
             self.mainSurface = pygame.image.load(runFile)
+            
         self.animations = []
         self.animLen = int(self.mainSurface.get_rect().width / 200)
 
@@ -35,21 +36,18 @@ class Character(pygame.sprite.Sprite):
         self.waitTime -= ms
 
         if self.waitTime <= 0:
-            self.setCurrentAnim()
+            if self.curAnim == self.animLen - 1:
+                self.curAnim = 0
+            else:
+                self.curAnim += 1
                 
-            self.waitTime = 200
-
-    def setCurrentAnim(self):
-        if self.prevAnim == self.animLen - 1:
-            self.curAnim = 0
-            self.prevAnim = 0
-        else:
-            self.curAnim = self.prevAnim + 1
-            self.prevAnim = self.prevAnim + 1
+            self.waitTime = 100
         
     def runningAnimation(self,face):
         
         self.prevAnim = self.curAnim
+
+        print(self.curAnim)
 
         if face == "W":
             return pygame.transform.flip(self.animations[self.curAnim],1,0)
