@@ -56,7 +56,7 @@ def onEvent(event):
         elif choice == 2:
             backgroundSurface == None
             main.setState(main.mainmenu)
-    if menuscreen == 1 and( event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE)or (event.key == pygame.K_RETURN and choice == 0):
+    if menuscreen == 1 and(event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE)or (event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN and choice == 0):
         menuscreen = 0
         n = 2
         choice = 0
